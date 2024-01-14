@@ -26,17 +26,6 @@
 		};
 	};
 
-        usb_vbus: regulator-usb-vbus {
-                compatible = "regulator-fixed";
-                regulator-name = "usb_vbus";
-                regulator-min-microvolt = <5000000>;
-                regulator-max-microvolt = <5000000>;
-                gpio = <&pio 12 GPIO_ACTIVE_HIGH>;
-                enable-active-high;
-                regulator-boot-on;
-        };
-
-
 	gpio-keys {
 		compatible = "gpio-keys";
 			reset {
@@ -141,14 +130,15 @@
 };
 
 &xhci {
-        vbus-supply = <&usb_vbus>;
-
-        status = "okay";
+	mediatek,u3p-dis-msk = <0x0>;
+	phys = <&u2port0 PHY_TYPE_USB2>,
+	       <&u3port0 PHY_TYPE_USB3>;
+	pinctrl-0 = <&usb_pwr_pins>;
+	pinctrl-names = "default";
+	status = "okay";
 };
 
-&usb_phy {
-        status = "okay";
-};
+
 
 &spi0 {
 	pinctrl-names = "default";
